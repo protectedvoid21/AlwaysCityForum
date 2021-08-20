@@ -1,0 +1,30 @@
+﻿@model IEnumerable<AppRole>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Role list";
+    int index = 1;
+}
+
+<h2>Role list</h2>
+<hr />
+<table class="table">
+    <tr>
+        <td>Nr</td>
+        <td>Name</td>
+        <td>Id</td>
+        <td>Actions</td>
+    </tr>
+    @foreach(var role in Model) {
+        <tr>
+            <td>@index</td>
+            <td>@role.Name</td>
+            <td>@role.Id</td>
+            <td>
+                <a asp-action="DeleteRole" asp-controller="Admin" asp-route-id="@role.Id">Delete</a>
+                <a asp-action="EditRole" asp-controller="Admin" asp-route-id="@role.Id">Edit</a>
+            </td>
+        </tr>
+        index++;
+    }
+</table>

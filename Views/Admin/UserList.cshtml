@@ -1,0 +1,28 @@
+﻿@model IEnumerable<AppUser>
+
+@{ 
+    Layout = "_Layout";
+    ViewData["Title"] = "User list";
+    int index = 1;
+}
+
+<table class="table">
+    <tr>
+        <td>Nr</td>
+        <td>Username</td>
+        <td>Email</td>
+        <td>Actions</td>
+    </tr>
+    @foreach(var user in Model) {
+        <tr>
+            <td>@index</td>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>
+                <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id">Edit</a>
+                <a asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@user.Id">Delete</a>
+            </td>
+        </tr>
+        index++;
+    }
+</table>

@@ -1,0 +1,33 @@
+﻿@model RegisterViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Register";
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="text-danger">@ViewBag.Message</div>
+    <div>
+        <label>Username</label><br />
+        <div><span asp-validation-for="@Model.UserName" class="text-danger"></span></div>
+        <input asp-for="@Model.UserName"/>
+    </div>
+    <div>
+        <label>Email</label><br />
+        <div><span asp-validation-for="@Model.Email" class="text-danger"></span></div>
+        <input asp-for="@Model.Email" />
+    </div>
+    <div>
+        <label>Password</label><br />
+        <div><span asp-validation-for="@Model.Password" class="text-danger"></span></div>
+        <input asp-for="@Model.Password" type="password" />
+    </div>
+    <div>
+        <label>Password confirmation</label><br />
+        <div><span asp-validation-for="@Model.PasswordConfirmation" class="text-danger"></span></div>
+        <input asp-for="@Model.PasswordConfirmation" type="password" />
+    </div>
+    <br />
+    <input type="submit" value="Register"/>
+</form>
