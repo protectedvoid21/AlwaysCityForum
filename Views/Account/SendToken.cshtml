@@ -1,0 +1,14 @@
+﻿@model string
+
+@{ 
+    Layout = "_Layout";
+    ViewData["Title"] = "Confirm email";
+}
+
+<h2>Email confirmation</h2>
+<hr />
+<p>Please confirm your email by clicking a link sent to your address</p>
+<form asp-action="SendToken" asp-controller="Account">
+    <input type="hidden" name="email" value="@Model"/>
+    <input value="Resend" type="submit"/>
+</form>

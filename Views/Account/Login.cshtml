@@ -9,13 +9,13 @@
     <div asp-validation-summary="ModelOnly"></div>
     <div class="text-danger">@ViewBag.Message</div>
     <div>
-        <label>Email</label><br />
         <div><span asp-validation-for="@Model.Email" class="text-danger"></span></div>
+        <label>Email</label><br />
         <input asp-for="@Model.Email" />
     </div>
     <div>
-        <label>Password</label><br />
         <div><span asp-validation-for="@Model.Password" class="text-danger"></span></div>
+        <label>Password</label><br />
         <input asp-for="@Model.Password" type="password" />
     </div>
     <br />

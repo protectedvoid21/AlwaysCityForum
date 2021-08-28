@@ -1,0 +1,18 @@
+﻿@model AppUser
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Admin panel";
+}
+
+<link href="~/css/panel.css" rel="stylesheet" />
+
+<h2>Administrator Panel</h2>
+<p>@ViewBag.Message</p>
+<hr />
+<ul class="action-container">
+    <li><a asp-action="ChangeEmail" asp-controller="Account">Change email</a></li>
+    <li><a asp-action="ChangePassword" asp-controller="Account">Change password</a></li>
+</ul>
+<p>Username : @Model.UserName</p>
+<p>Email : @Model.Email</p>

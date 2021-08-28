@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,9 +29,14 @@ namespace WebForum {
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<IdentityAppContext>();
+                options.SignIn.RequireConfirmedEmail = true;
+            }).AddEntityFrameworkStores<IdentityAppContext>().AddDefaultTokenProviders();
 
             services.AddDbContext<IdentityAppContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("Forum"));
+            });
+
+            services.AddDbContext<NewsDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Forum"));
             });
         }

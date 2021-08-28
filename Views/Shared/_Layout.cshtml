@@ -18,7 +18,7 @@
             <li><a href="#">Shoutbox</a></li>
             <li><a href="#">Contact</a></li>
             @if(User.Identity.IsAuthenticated) {
-                <li class="float-right"><a href="#">Hello @User.Identity.Name!</a></li>
+                <li class="float-right"><a asp-action="UserPanel" asp-controller="Account">Hello @User.Identity.Name!</a></li>
                 <li class="float-right"><a asp-action="Logout" asp-controller="Account">Log out</a></li>
                 if(User.IsInRole("Admin")) {
                     <li class="float-right"><a asp-action="Panel" asp-controller="Admin">Admin Panel</a></li>

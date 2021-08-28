@@ -11,6 +11,7 @@
         <td>Nr</td>
         <td>Username</td>
         <td>Email</td>
+        <td>Confirmed</td>
         <td>Actions</td>
     </tr>
     @foreach(var user in Model) {
@@ -18,6 +19,7 @@
             <td>@index</td>
             <td>@user.UserName</td>
             <td>@user.Email</td>
+            <td>@user.EmailConfirmed</td>
             <td>
                 <a asp-action="EditUser" asp-controller="Admin" asp-route-id="@user.Id">Edit</a>
                 <a asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@user.Id">Delete</a>
