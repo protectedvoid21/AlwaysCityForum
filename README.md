@@ -1,1 +1,1 @@
-# AlwaysCityForum Glory to AlwaysCity!
+# Glory to AlwaysCity!
