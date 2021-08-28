@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace WebForum.Models {
     public static class TokenHelper {
-        public static async Task<bool> SendEmail(string userEmail, string confirmationLink) {
+        public static async Task<bool> SendEmail(string userEmail, string confirmationLink, string title) {
             MailMessage mailMessage = new MailMessage {
                 From = new MailAddress("karybers1@gmail.com"),
-                Subject = "AlwaysCity Forum - Email Confirmation",
+                Subject = $"AlwaysCity Forum - {title}",
                 IsBodyHtml = true,
-                Body = confirmationLink
+                Body = $"<h2>AlwaysCity Forum</h2><hr><a href=\"{confirmationLink}\">Click this link to confirm your account</a>"
             };
             mailMessage.To.Add(new MailAddress(userEmail));
 

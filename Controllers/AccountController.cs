@@ -75,19 +75,13 @@ namespace WebForum.Controllers {
                 return View();
             }
 
-            if(await SendConfirmationLink(user)) {
-                return RedirectToAction("SendToken", "Account", new { user.Email });
-            }
-            else {
-                ViewBag.Message = "Email confirmation failed";
-                return View("Error");
-            }
+            return RedirectToAction("SendToken", "Account", new { user.Email });
         }
 
         public async Task<bool> SendConfirmationLink(AppUser user) {
             string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             string confirmationLink = Url.Action("ConfirmEmail", "Account", new { token, email = user.Email }, Request.Scheme);
-            bool emailResponse = await TokenHelper.SendEmail(user.Email, confirmationLink);
+            bool emailResponse = await TokenHelper.SendEmail(user.Email, confirmationLink, "Email Confirmation");
             return emailResponse;
         }
 
@@ -141,9 +135,47 @@ namespace WebForum.Controllers {
             return View();
         }
 
-        [HttpPost, Authorize] // TO BE CONTINUED
-        public async Task<IActionResult> ChangeEmail(string email) {
+        [HttpPost, Authorize]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel emailModel) {
+            if(!ModelState.IsValid) {
+                return View();
+            }
             AppUser user = await userManager.GetUserAsync(User);
+ 
+            if(!await userManager.CheckPasswordAsync(user, emailModel.Password)) {
+                ViewBag.Message = "Incorrect password";
+                return View();    
+            }
+            string token = await userManager.GenerateChangeEmailTokenAsync(user, emailModel.NewEmail);
+            string confirmationLink = Url.Action("ConfirmEmailChange", "Account", new { token, Email = emailModel.NewEmail }, Request.Scheme);
+            bool changeEmailResponse = await TokenHelper.SendEmail(emailModel.NewEmail, confirmationLink, "Email change confirmation");
+
+            if(!changeEmailResponse) {
+                ViewBag.Message = "Email confirmation failed";
+                return View("Error");
+            }
+
+            return RedirectToAction("SendTokenEmailChange", "Account");
+        }
+
+        [Authorize]
+        public ViewResult SendTokenEmailChange() {
+            return View();
+        }
+
+        public async Task<IActionResult> ConfirmEmailChange(string token, string email) {
+            AppUser user = await userManager.GetUserAsync(User);
+            if(user == null) {
+                ViewBag.Message = "User with this email was not found";
+                return View("Error");
+            }
+            IdentityResult result = await userManager.ChangeEmailAsync(user, email, token);
+            if(!result.Succeeded) {
+                ViewBag.Message = "Email change failed";
+                return View("Error");
+            }
+
+            ViewBag.Message = "Email change accepted";
             return RedirectToAction("UserPanel");
         }
 

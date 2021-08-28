@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model ChangeEmailViewModel
 
 @{
     Layout = "_Layout";
@@ -8,9 +8,21 @@
 <h2>Edit email</h2>
 <hr />
 <form method="post">
+    <p class="text-danger">@ViewBag.Message</p>
     <div class="form-group">
-        <label>Enter new email</label>
-        <input name="email" />
+        <div><span asp-validation-for="@Model.NewEmail" class="text-danger"></span></div>
+        <label asp-for="@Model.NewEmail"></label><br />
+        <input asp-for="@Model.NewEmail" />
+    </div>
+    <div class="form-group">
+        <div><span asp-validation-for="@Model.NewEmailConfirmation" class="text-danger"></span></div>
+        <label asp-for="@Model.NewEmailConfirmation"></label><br />
+        <input asp-for="@Model.NewEmailConfirmation" />
+    </div>
+    <div class="form-group">
+        <div><span asp-validation-for="@Model.Password" class="text-danger"></span></div>
+        <label asp-for="@Model.Password"></label><br />
+        <input asp-for="@Model.Password" />
     </div>
     <input type="submit" value="Confirm" />
 </form>
