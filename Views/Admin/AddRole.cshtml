@@ -1,0 +1,17 @@
+﻿@model RoleViewModel 
+
+@{ 
+    Layout = "_Layout";
+    ViewData["Title"] = "Add new role";
+} 
+
+<h2>Add new role</h2>
+<hr />
+<form method="post">
+    <div class="form-group">
+        <div><span asp-validation-for="@Model.Name" class="text-danger"></span></div>
+        <label>Role name</label>
+        <input asp-for="@Model.Name"/>
+    </div>
+    <input type="submit" value="Submit" />
+</form>

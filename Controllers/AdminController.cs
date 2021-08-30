@@ -35,6 +35,24 @@ namespace WebForum.Controllers {
         }
 
         [HttpGet]
+        public ViewResult AddRole() {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRole(RoleViewModel roleModel) {
+            if(!ModelState.IsValid) {
+                return View();
+            }
+
+            if(!await roleManager.RoleExistsAsync(roleModel.Name)) {
+                await roleManager.CreateAsync(new AppRole { Name = roleModel.Name });
+            }
+            ViewBag.Message = "Role has been added successfully";
+            return RedirectToAction("RoleList", "Admin");
+        }
+
+        [HttpGet]
         public async Task<ViewResult> EditUser(string id) {
             AppUser user = await userManager.FindByIdAsync(id);
 

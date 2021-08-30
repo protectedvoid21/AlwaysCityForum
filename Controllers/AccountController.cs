@@ -5,16 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using WebForum.Models;
 
 namespace WebForum.Controllers {
     public class AccountController : Controller {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
+        private readonly IMapper mapper;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) {
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMapper mapper) {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -61,11 +64,12 @@ namespace WebForum.Controllers {
                 return View();
             }
 
-            AppUser user = new AppUser {
+            AppUser user = mapper.Map<RegisterViewModel, AppUser>(registerModel);
+            /*AppUser user = new AppUser {
                 UserName = registerModel.UserName,
                 Email = registerModel.Email,
                 PasswordHash = registerModel.Password
-            };
+            };*/
 
             IdentityResult result = await userManager.CreateAsync(user, registerModel.Password);
             if(!result.Succeeded) {
@@ -163,6 +167,7 @@ namespace WebForum.Controllers {
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> ConfirmEmailChange(string token, string email) {
             AppUser user = await userManager.GetUserAsync(User);
             if(user == null) {

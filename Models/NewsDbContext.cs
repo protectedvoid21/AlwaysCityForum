@@ -8,6 +8,6 @@ namespace WebForum.Models {
     public class NewsDbContext : DbContext {
         public NewsDbContext(DbContextOptions<NewsDbContext> options) : base(options) { }
 
-        public DbSet<NewsArticle> NewsArticles { get; set; }
+        public DbSet<ArticleNews> NewsArticles { get; set; }
     }
 }
