@@ -7,6 +7,5 @@ using System.Threading.Tasks;
 
 namespace WebForum.Models {
     public class AppUser : IdentityUser<int> {
-        
     }
 }

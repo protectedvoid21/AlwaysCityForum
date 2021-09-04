@@ -9,21 +9,27 @@ using System.Threading.Tasks;
 using WebForum.Models;
 
 namespace WebForum.Controllers {
-    [Authorize(Roles = "Editor,Admin")]
-    public class EditorController : Controller {
+    public class NewsController : Controller {
         private readonly NewsDbContext newsDbContext;
         private readonly IWebHostEnvironment hostingEnvironment;
 
-        public EditorController(NewsDbContext newsDbContext, IWebHostEnvironment hostingEnvironment) {
+        public NewsController(NewsDbContext newsDbContext, IWebHostEnvironment hostingEnvironment) {
             this.newsDbContext = newsDbContext;
             this.hostingEnvironment = hostingEnvironment;
         }
 
+        public ViewResult News() {
+            IEnumerable<ArticleNews> newsArticles = newsDbContext.NewsArticles;
+            return View(newsArticles);
+        }
+
+        [Authorize(Roles = "Editor,Admin")]
         [HttpGet]
         public ViewResult AddNews() {
             return View();
         }
 
+        [Authorize(Roles = "Editor,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddNews(ArticleNewsViewModel articleModel) {
             if(!ModelState.IsValid) {
@@ -43,10 +49,16 @@ namespace WebForum.Controllers {
                 PublicationDate = DateTime.Now,
                 ImagePath = uniqueFileName,
             };
-            await newsDbContext.AddAsync(articleNews);
+            await newsDbContext.NewsArticles.AddAsync(articleNews);
+            await newsDbContext.SaveChangesAsync();
 
             ViewBag.Message = "The article was successfully added";
-            return RedirectToAction("News", "Home");
+            return RedirectToAction("News");
+        }
+
+        public ViewResult Article(string id) {
+            ArticleNews article = newsDbContext.NewsArticles.First(n => n.Id.ToString() == id);
+            return View(article);
         }
     }
 }

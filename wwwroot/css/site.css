@@ -72,8 +72,11 @@ body {
 
 body {
     background-color: #005a82;
-    background-repeat: no-repeat;
-    background-size: cover;
+}
+
+.main-container {
+    width: 80%;
+    margin: auto;
 }
 
 main {

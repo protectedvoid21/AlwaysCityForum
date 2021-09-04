@@ -1,0 +1,22 @@
+﻿@model ArticleNews
+
+@{ 
+    Layout = "_Layout";
+}
+
+<style>
+    .main-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .title {
+        font-size: 5em;
+        font-weight: bold;
+    }
+</style>
+
+
+<img src="/images/@Model.ImagePath" class="main-image">
+<h1 class="title">@Model.Title.ToUpper()</h1>
+<p class="article-text">@Model.ContentText</p>

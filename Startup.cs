@@ -40,6 +40,10 @@ namespace WebForum {
             services.AddDbContext<NewsDbContext>(options => {
                 options.UseSqlServer(Configuration.GetConnectionString("Forum"));
             });
+
+            services.AddDbContext<ForumDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("Forum"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

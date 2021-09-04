@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ArticleNews>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "News";
+}
+
+<style>
+    ul {
+        list-style: none;
+    }
+
+    .article-title {
+        text-decoration: underline;
+        color: black;
+        font-weight: bold;
+    }
+
+    .article-image {
+        width: 200px;
+        height: auto;
+        margin-right: 10px;
+        float: left;
+    }
+
+    .article-data-container {
+        width: 100%;
+        height: 30px;
+    }
+
+    .small-data {
+        float: left;
+        font-size: 0.9em;
+        color: #777777;
+    }
+
+    .date {
+        float: right;
+    }
+
+    .description {
+        margin-top: 10px;
+    }
+
+    .btn-info {
+        padding: 10px;
+    }
+</style>
+
+@if(User.IsInRole("Editor") || User.IsInRole("Admin")) {
+    <a asp-action="AddNews" asp-controller="News" class="btn-info">Add new article</a>
+    <hr />
+}
+@if(!Model.Any()) {
+    <h2>No news available</h2>
+    <h4>"News" page is currently under maintenance.</h4>
+}
+else {
+<ul>
+    @foreach(var news in Model) {
+    <li>  
+        <img src="/images/@news.ImagePath" class="article-image float-left" asp-append-version="true" />
+        <h3><a asp-action="Article" asp-controller="News" asp-route-id="@news.Id" class="article-title">@news.Title</a></h3>
+        <div class="article-data-container">
+            <p class="small-data">@news.Author</p>
+            <p class="small-data date">@news.PublicationDate</p>
+        </div>
+        <p class="description">@news.ContentText</p>
+    </li>
+    }
+</ul>
+}

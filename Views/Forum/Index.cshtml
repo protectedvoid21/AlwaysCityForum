@@ -1,0 +1,25 @@
+﻿@model IEnumerable<ForumSection>
+
+@{ 
+    Layout = "_Layout";
+    ViewData["Title"] = "Forum";
+}
+
+<style>
+    .section-topic {
+        text-decoration: underline;
+        color: black;
+        font-weight: bold;
+    }
+</style>
+
+@if(User.IsInRole("Admin") || User.IsInRole("Editor")) {
+    <a asp-action="AddSection" asp-controller="Forum" class="btn-info" style="padding: 10px; margin-bottom: 10px">Add section</a>
+}
+<h2>Forum</h2>
+@foreach(var topic in Model) {
+    <div>
+        <a href="#" class="section-topic"><h3>@topic.Name</h3></a>
+        <p>@topic.Description</p>
+    </div>
+}
