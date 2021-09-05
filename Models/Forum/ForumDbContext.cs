@@ -11,7 +11,6 @@ namespace WebForum.Models {
         public DbSet<ForumUser> ForumUsers { get; set; }
 
         public DbSet<ForumSection> Sections { get; set; }
-        public DbSet<ForumThread> Threads { get; set; }
         public DbSet<ForumPost> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
     }

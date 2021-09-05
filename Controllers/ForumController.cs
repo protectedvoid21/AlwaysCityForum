@@ -37,5 +37,28 @@ namespace WebForum.Controllers {
 
             return RedirectToAction("Index", "Forum");
         }
+
+        [Route("{controller}/{action=Section}/{name:slugify}")]
+        public IActionResult Section(string id) {
+            IEnumerable<ForumThread> threads = forumDbContext.Threads.Where(t => t.SectionId.ToString() == id);
+            return View(threads);
+        }
+
+        [HttpGet]
+        public ViewResult AddThread(string id) {
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> AddThread(ForumThread thread) {
+            if(!ModelState.IsValid) {
+                return View();
+            }
+
+            await forumDbContext.Threads.AddAsync(thread);
+            await forumDbContext.SaveChangesAsync();
+
+            return RedirectToAction("Section", new )
+        }
     }
 }

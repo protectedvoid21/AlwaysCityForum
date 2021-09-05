@@ -23,6 +23,9 @@ namespace WebForum {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllersWithViews();
+            services.AddRouting(options => {
+                options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
+            });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddIdentity<AppUser, AppRole>(options => {
                 options.Password.RequiredLength = 8;

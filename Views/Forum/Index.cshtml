@@ -15,11 +15,12 @@
 
 @if(User.IsInRole("Admin") || User.IsInRole("Editor")) {
     <a asp-action="AddSection" asp-controller="Forum" class="btn-info" style="padding: 10px; margin-bottom: 10px">Add section</a>
+    <hr />
 }
 <h2>Forum</h2>
 @foreach(var topic in Model) {
     <div>
-        <a href="#" class="section-topic"><h3>@topic.Name</h3></a>
+        <a asp-action="Section" asp-controller="Forum" asp-route-name="@topic.Name" asp-route-id="@topic.Id" class="section-topic"><h3>@topic.Name</h3></a>
         <p>@topic.Description</p>
     </div>
 }

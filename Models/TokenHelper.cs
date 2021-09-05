@@ -18,7 +18,7 @@ namespace WebForum.Models {
 
             SmtpClient client = new SmtpClient {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(),
+                Credentials = new NetworkCredential(AAAAAAAAA),
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 Host = "smtp.gmail.com",
