@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebForum.Models;
 
 namespace WebForum.Migrations.ForumDb
 {
     [DbContext(typeof(ForumDbContext))]
-    partial class ForumDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211004184216_fixpost4")]
+    partial class fixpost4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,17 +110,19 @@ namespace WebForum.Migrations.ForumDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ForumSectionId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Posts");
                 });
@@ -168,6 +172,15 @@ namespace WebForum.Migrations.ForumDb
                     b.ToTable("Reaction");
                 });
 
+            modelBuilder.Entity("WebForum.Models.ForumPost", b =>
+                {
+                    b.HasOne("WebForum.Models.ForumSection", "Section")
+                        .WithMany("ForumPosts")
+                        .HasForeignKey("SectionId");
+
+                    b.Navigation("Section");
+                });
+
             modelBuilder.Entity("WebForum.Models.Reaction", b =>
                 {
                     b.HasOne("WebForum.Models.Comment", null)
@@ -184,6 +197,11 @@ namespace WebForum.Migrations.ForumDb
             modelBuilder.Entity("WebForum.Models.Comment", b =>
                 {
                     b.Navigation("ReactionList");
+                });
+
+            modelBuilder.Entity("WebForum.Models.ForumSection", b =>
+                {
+                    b.Navigation("ForumPosts");
                 });
 #pragma warning restore 612, 618
         }

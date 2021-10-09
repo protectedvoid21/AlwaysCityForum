@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebForum.Models;
 
 namespace WebForum.Migrations.ForumDb
 {
     [DbContext(typeof(ForumDbContext))]
-    partial class ForumDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210918154823_posttweak")]
+    partial class posttweak
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +82,7 @@ namespace WebForum.Migrations.ForumDb
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -94,6 +96,8 @@ namespace WebForum.Migrations.ForumDb
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Comments");
                 });
 
@@ -104,21 +108,29 @@ namespace WebForum.Migrations.ForumDb
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ForumSectionId")
+                    b.Property<int?>("ForumSectionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("SectionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ForumSectionId");
 
                     b.ToTable("Posts");
                 });
@@ -168,6 +180,22 @@ namespace WebForum.Migrations.ForumDb
                     b.ToTable("Reaction");
                 });
 
+            modelBuilder.Entity("WebForum.Models.Comment", b =>
+                {
+                    b.HasOne("WebForum.Models.AppUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("WebForum.Models.ForumPost", b =>
+                {
+                    b.HasOne("WebForum.Models.ForumSection", null)
+                        .WithMany("ForumPosts")
+                        .HasForeignKey("ForumSectionId");
+                });
+
             modelBuilder.Entity("WebForum.Models.Reaction", b =>
                 {
                     b.HasOne("WebForum.Models.Comment", null)
@@ -184,6 +212,11 @@ namespace WebForum.Migrations.ForumDb
             modelBuilder.Entity("WebForum.Models.Comment", b =>
                 {
                     b.Navigation("ReactionList");
+                });
+
+            modelBuilder.Entity("WebForum.Models.ForumSection", b =>
+                {
+                    b.Navigation("ForumPosts");
                 });
 #pragma warning restore 612, 618
         }

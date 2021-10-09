@@ -1,16 +1,13 @@
-﻿@model IEnumerable<ForumThread>
+﻿@model IEnumerable<ForumPost>
 
 @{
     Layout = "_Layout";
 }
 
-@if(User.IsInRole("Admin") || User.IsInRole("Editor")) {
-    <a asp-action="AddSection" asp-controller="Forum" class="btn-info" style="padding: 10px; margin-bottom: 10px">Add section</a>
-    <hr />
-}
-@foreach(var thread in Model) {
+<a asp-action="AddPost" asp-controller="Forum" asp-route-id="@ViewBag.sectionId" class="btn-info" style="padding: 10px; margin-bottom: 10px">Add post</a>
+<hr />
+@foreach(var post in Model) {
     <div>
-        <a asp-action="Section" asp-controller="Forum" asp-route-name="@thread.Name" asp-route-id="@thread.Id" class="section-topic"><h3>@thread.Name</h3></a>
-        <p>@thread.</p>
+        <a asp-action="Post" asp-controller="Forum" asp-route-name="@post.Title" asp-route-id="@post.Id" class="section-topic"><h3>@post.Title</h3></a>
     </div>
 }

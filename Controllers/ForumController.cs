@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,11 @@ using WebForum.Models;
 namespace WebForum.Controllers {
     public class ForumController : Controller {
         private readonly ForumDbContext forumDbContext;
+        private readonly UserManager<AppUser> userManager;
 
-        public ForumController(ForumDbContext forumDbContext) {
+        public ForumController(ForumDbContext forumDbContext, UserManager<AppUser> userManager) {
             this.forumDbContext = forumDbContext;
+            this.userManager = userManager;
         }
 
         public IActionResult Index() {
@@ -39,26 +42,36 @@ namespace WebForum.Controllers {
         }
 
         [Route("{controller}/{action=Section}/{name:slugify}")]
-        public IActionResult Section(string id) {
-            IEnumerable<ForumThread> threads = forumDbContext.Threads.Where(t => t.SectionId.ToString() == id);
-            return View(threads);
+        public IActionResult Section(int id) {
+            IEnumerable<ForumPost> posts = forumDbContext.Posts.Where(t => t.ForumSectionId == id);
+            ViewBag.sectionId = id;
+            return View(posts);
         }
 
         [HttpGet]
-        public ViewResult AddThread(string id) {
+        public ViewResult AddPost(int id) {
+            ViewBag.CurrentSection = id;
             return View();
         }
         
         [HttpPost]
-        public async Task<IActionResult> AddThread(ForumThread thread) {
+        public async Task<IActionResult> AddPost(ForumPost post) {
             if(!ModelState.IsValid) {
                 return View();
             }
+            post.Id = 0;
 
-            await forumDbContext.Threads.AddAsync(thread);
+            post.PublicationDate = DateTime.Now;
+
+            await forumDbContext.Posts.AddAsync(post);
             await forumDbContext.SaveChangesAsync();
 
-            return RedirectToAction("Section", new )
+            return RedirectToAction("Index", "Forum");
+        }
+
+        [Route("{controller}/{action=Section}/{name:slugify}")]
+        public async Task<IActionResult> Post(int id) {
+
         }
     }
 }

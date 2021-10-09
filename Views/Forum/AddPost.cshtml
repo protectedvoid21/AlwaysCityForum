@@ -1,19 +1,21 @@
 ﻿@model ForumPost
 
-@{ 
+@{
     Layout = "_Layout";
     ViewData["Title"] = "Add new thread";
-} 
+    string scriptSource = $"https://cdn.tiny.cloud/1/{ SecretData.tinyMCE_ApiKey }/tinymce/5/tinymce.min.js";
+}
+
+<script src="@scriptSource" referrerpolicy="origin"></script>
+<script>tinymce.init({selector:'textarea'});</script>
 
 <form method="post">
+    <input type="hidden" asp-for="@Model.ForumSectionId" value="@ViewBag.CurrentSection"/>
     <div class="form-group">
         <div><span asp-validation-for="@Model.Title"></span></div>
         <label asp-for="@Model.Title"></label><br />
         <input asp-for="@Model.Title" />
     </div>
-    <div class="form-group">
-        <div><span asp-validation-for="@Model.Content"></span></div>
-        <label asp-for="@Model.Content"></label><br />
-        <input asp-for="@Model.Content" type=""/>
-    </div>
+    <textarea asp-for="@Model.Content"></textarea>
+    <input type="submit" value="Confirm" />
 </form>
